@@ -106,7 +106,7 @@ Whether you're exploring, contributing, or adapting this for your own needs, we'
 ### Quick Start:
 
 ```bash
-# 1. Install dependencies (we use npm)
+# 1. Install dependencies
 npm install
 
 # 2. Set up your environment
@@ -173,7 +173,7 @@ The system needs a few environment variables to work properly. Don't worry – t
 ### Set Up Security Hooks:
 
 ```bash
-# Install pre-commit hooks (recommended!)
+# Install pre-commit hooks (recommended)
 bash .githooks/install.sh
 
 # Verify everything is clean
