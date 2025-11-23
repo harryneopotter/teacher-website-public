@@ -1,0 +1,121 @@
+# Gitleaks configuration file
+# This file configures gitleaks to scan for sensitive data and secrets
+# Run with: gitleaks detect --config .gitleaks.toml
+
+title = "gitleaks config for teacher-site-public"
+
+# Extend the default gitleaks configuration
+[extend]
+useDefault = true
+
+# Custom rules for this project
+[[rules]]
+id = "firebase-service-account"
+description = "Firebase service account JSON"
+regex = '''(?i)["']type["']\s*:\s*["']service_account["']'''
+tags = ["firebase", "credentials"]
+
+[[rules]]
+id = "telegram-bot-token"
+description = "Telegram Bot Token"
+regex = '''[0-9]{8,10}:[a-zA-Z0-9_-]{35,}'''
+tags = ["telegram", "api-key"]
+
+[[rules]]
+id = "google-cloud-project-id"
+description = "Google Cloud Project ID (sensitive in some contexts)"
+regex = '''(?i)(project_id|projectId)["']?\s*[:=]\s*["'][a-z0-9-]{6,30}["']'''
+tags = ["gcp", "project"]
+[rules.allowlist]
+paths = [
+    '''package\.json$''',
+    '''README\.md$''',
+]
+
+[[rules]]
+id = "generic-api-key"
+description = "Generic API Key"
+regex = '''(?i)(api[_-]?key|apikey|api[_-]?token)["']?\s*[:=]\s*["'][a-zA-Z0-9_\-]{20,}["']'''
+tags = ["api-key", "secret"]
+[rules.allowlist]
+paths = [
+    '''\.md$''',
+    '''\.example$''',
+]
+
+[[rules]]
+id = "private-key"
+description = "Private Key"
+regex = '''-----BEGIN (?:RSA |EC )?PRIVATE KEY-----'''
+tags = ["private-key", "secret"]
+
+[[rules]]
+id = "email-addresses"
+description = "Email addresses (PII)"
+regex = '''(?i)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'''
+tags = ["pii", "email"]
+[rules.allowlist]
+paths = [
+    '''SENSITIVE_DATA_REMOVAL_GUIDE\.md$''',
+    '''PII_REMOVAL_REPORT\.md$''',
+    '''README\.md$''',
+]
+regexes = [
+    '''example\.com''',
+    '''your-email@''',
+    '''user@''',
+    '''admin@''',
+]
+
+[[rules]]
+id = "phone-numbers"
+description = "Phone numbers (PII)"
+regex = '''(?:\+?1[-.]?)?\(?([0-9]{3})\)?[-.]?([0-9]{3})[-.]?([0-9]{4})'''
+tags = ["pii", "phone"]
+[rules.allowlist]
+paths = [
+    '''\.md$''',
+]
+
+[[rules]]
+id = "ip-addresses"
+description = "IP Addresses (potentially sensitive)"
+regex = '''\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b'''
+tags = ["ip", "network"]
+[rules.allowlist]
+paths = [
+    '''SENSITIVE_DATA_REMOVAL_GUIDE\.md$''',
+]
+regexes = [
+    '''127\.0\.0\.1''',
+    '''0\.0\.0\.0''',
+    '''localhost''',
+]
+
+# Global allowlist
+[allowlist]
+description = "Global allowlist for common false positives"
+paths = [
+    '''^\.git/''',
+    '''node_modules/''',
+    '''\.lock$''',
+    '''package-lock\.json$''',
+    '''bun\.lock$''',
+]
+
+regexes = [
+    '''(REDACTED|EXAMPLE|SAMPLE|PLACEHOLDER|YOUR_|<.*?>|\[.*?\])''',
+]
+
+commits = [
+    # Add specific commit hashes to allowlist if needed
+]
+
+# Stop scanning at specific paths
+stopwords = [
+    "redacted",
+    "example",
+    "sample",
+    "placeholder",
+    "dummy",
+]

@@ -1,0 +1,25 @@
+steps:
+  # Deploy the Telegram bot Cloud Function
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      - 'functions'
+      - 'deploy'
+      - 'telegram-showcase-bot'
+      - '--runtime=nodejs20'
+      - '--trigger=http'
+      - '--memory=512MB'
+      - '--timeout=540s'
+      - '--region=us-central1'
+      - '--entry-point=telegramShowcaseBot'
+      - '--set-env-vars=GOOGLE_CLOUD_PROJECT=$PROJECT_ID'
+      - '--allow-unauthenticated'
+      - '--source=functions/telegram-bot'
+
+# Store the function URL for webhook setup
+substitutions:
+  _FUNCTION_NAME: 'telegram-showcase-bot'
+  _REGION: 'us-central1'
+
+options:
+  logging: CLOUD_LOGGING_ONLY

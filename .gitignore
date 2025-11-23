@@ -1,0 +1,77 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Migration Documentation Files (keep local only)
+.kiro/
+gcp-configuration-guide.md
+docker-and-nextjs-config.md
+migration-timeline-and-procedures.md
+vercel-to-gcp-migration-analysis.md
+current-functionality-baseline.md
+DOCUMENTATION.md
+
+# PDF files and thumbnails (stored in Cloud Storage)
+public/pdfs/
+public/thumbnails/
+Plan/
+sqlite_mcp_server.db
+server.log
+
+# GCP config files that should stay local only
+# cors-config.json
+
+# Project status files (already in remote, but ignore future changes)
+FIXES_APPLIED.md
+PROJECT_STATUS.md
+WARP.md
+
+# Security and sensitive data
+*.key
+*.pem
+*.p12
+*.pfx
+service-account*.json
+replacements.txt
+secrets.txt
+credentials.json
+*_credentials.json

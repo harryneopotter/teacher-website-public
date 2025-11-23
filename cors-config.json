@@ -1,0 +1,19 @@
+[
+    {
+        "origin": [
+            "https://your-app-domain.com",
+            "https://your-program-domain.com",
+            "https://*.your-program-domain.com",
+            "http://localhost:3000"
+        ],
+        "method": [
+            "GET",
+            "HEAD"
+        ],
+        "responseHeader": [
+            "Content-Type",
+            "Access-Control-Allow-Origin"
+        ],
+        "maxAgeSeconds": 3600
+    }
+]
