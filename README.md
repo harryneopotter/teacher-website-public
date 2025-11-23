@@ -39,6 +39,36 @@ No dashboards, no logins, no friction.
 
 ---
 
+## 🏗️ Architecture
+
+Want to understand how the Telegram bot integrates with Google Cloud Run? Check out our comprehensive architecture documentation:
+
+> 🏛️ [**View Architecture Documentation →**](./ARCHITECTURE.md)
+
+### Quick Overview
+
+The system uses a **webhook-based architecture** where:
+
+1. **Telegram Bot** receives messages via webhook (Cloud Function)
+2. **Cloud Function** processes commands and uploads to Cloud Storage
+3. **Firestore** stores metadata and content state
+4. **Cloud Run** serves the Next.js frontend
+5. **Cloud Build** automates deployment pipeline
+
+```
+📱 Telegram → ☁️ Cloud Function → 🗄️ Firestore/Storage → 🚀 Cloud Run → 🌐 Users
+```
+
+The architecture documentation includes:
+- 📊 Interactive Mermaid diagrams
+- 🔄 Detailed data flow sequences
+- 🔌 Telegram + Cloud Run integration guide
+- 🔒 Security and authentication details
+- 📁 Repository structure explanation
+- 🚀 Deployment pipeline overview
+
+---
+
 ## 🧪 Development Setup
 
 ```bash
