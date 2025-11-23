@@ -4,6 +4,30 @@ This document explains the complete architecture of the Teacher Website system, 
 
 ---
 
+## 📑 Table of Contents
+
+- [System Architecture Diagram](#-system-architecture-diagram) - Visual overview of all components
+- [Data Flow: PDF Upload Process](#-data-flow-pdf-upload-process) - Step-by-step sequence
+- [Telegram + Cloud Run Integration Details](#-telegram--cloud-run-integration-details) - In-depth integration guide
+  - [Webhook Configuration](#1-webhook-configuration)
+  - [Cloud Function Deployment](#2-cloud-function-deployment)
+  - [Authentication & Authorization](#3-authentication--authorization)
+  - [Cloud Storage Integration](#4-cloud-storage-integration)
+  - [Conversation State Management](#5-conversation-state-management)
+  - [Next.js on Cloud Run](#6-nextjs-on-cloud-run)
+  - [Real-time Notifications](#7-real-time-notifications)
+- [Repository Structure](#-repository-structure) - File organization
+- [Security Features](#-security-features) - Security implementation
+- [Deployment Flow](#-deployment-flow) - CI/CD pipeline
+- [Monitoring & Metrics](#-monitoring--metrics) - Observability
+- [Key Design Decisions](#-key-design-decisions) - Architecture rationale
+- [Configuration](#-configuration) - Environment setup
+- [Troubleshooting](#-troubleshooting) - Common issues
+- [Learning Resources](#-learning-resources) - External documentation
+- [Future Enhancements](#-future-enhancements) - Roadmap
+
+---
+
 ## 📊 System Architecture Diagram
 
 ```mermaid
@@ -214,6 +238,9 @@ const AUTHORIZED_USERS = {
 
 // Role hierarchy: admin > content_manager
 function hasPermission(userId, requiredRole) {
+  const userRole = AUTHORIZED_USERS[userId.toString()];
+  if (!userRole) return false;
+  
   const roleLevels = {
     'content_manager': 1,
     'admin': 2
@@ -227,6 +254,7 @@ function hasPermission(userId, requiredRole) {
 - **Thumbnail Uploads**: 10 per hour per user
 - **Stored in Firestore**: Durable across function instances
 - **Fail-open strategy**: Allows requests if rate limiter fails
+- See [Monitoring & Metrics](#-monitoring--metrics) for tracking rate limit hits
 
 ### 4. **Cloud Storage Integration**
 
@@ -238,7 +266,7 @@ function hasPermission(userId, requiredRole) {
 | **Thumbnails Bucket** | Public | Preview images | Direct HTTPS URLs |
 
 #### **Why This Design?**
-- ✅ **Privacy**: PDF content is protected
+- ✅ **Privacy**: PDF content is protected (see [Security Features](#-security-features))
 - ✅ **Performance**: Thumbnails load fast (no auth)
 - ✅ **Cost**: Signed URLs avoid function overhead
 - ✅ **Security**: Time-limited access to sensitive content
@@ -351,9 +379,12 @@ teacher-website-public/
 ```javascript
 // Escape Telegram MarkdownV2 special characters
 function sanitizeMarkdown(text) {
+  if (!text) return '';
   const chars = ['\\', '_', '*', '[', ']', '(', ')', '~', '`', 
                  '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'];
-  return String(text).replace(new RegExp([...]), '\\$1');
+  // Build regex pattern from special characters
+  const re = new RegExp('([' + chars.map(c => '\\' + c).join('') + '])', 'g');
+  return String(text).replace(re, '\\$1');
 }
 ```
 
@@ -435,6 +466,8 @@ gcloud run services logs read showcase-app --region=us-central1
 ---
 
 ## 🎯 Key Design Decisions
+
+*See [Cloud Function Deployment](#2-cloud-function-deployment) and [Webhook Configuration](#1-webhook-configuration) for implementation details.*
 
 ### 1. **Why Cloud Functions for Bot?**
 - ✅ **Event-driven**: Only runs when messages arrive
