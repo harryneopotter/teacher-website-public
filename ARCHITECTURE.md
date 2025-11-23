@@ -230,15 +230,20 @@ flowchart LR
 
 #### **Authorization System:**
 ```javascript
-// User roles stored in Firestore
+// User roles stored in Firestore and cached in memory
 const AUTHORIZED_USERS = {
   [ADMIN_USER_ID]: 'admin',
   [CONTENT_MANAGER_USER_ID]: 'content_manager'
 };
 
-// Role hierarchy: admin > content_manager
+// Get user's role
+function getUserRole(userId) {
+  return AUTHORIZED_USERS[userId.toString()] || null;
+}
+
+// Check if user has specific permission (role hierarchy)
 function hasPermission(userId, requiredRole) {
-  const userRole = AUTHORIZED_USERS[userId.toString()];
+  const userRole = getUserRole(userId);
   if (!userRole) return false;
   
   const roleLevels = {
@@ -378,14 +383,20 @@ teacher-website-public/
 ### 1. **Input Sanitization**
 ```javascript
 // Escape Telegram MarkdownV2 special characters
+// This prevents user input from breaking Telegram message formatting
 function sanitizeMarkdown(text) {
   if (!text) return '';
   const chars = ['\\', '_', '*', '[', ']', '(', ')', '~', '`', 
                  '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'];
-  // Build regex pattern from special characters
+  // Build regex pattern: escapes each special char in the character class
+  // Example result: /([\\\_\*\[\]\(\)\~\`\>\#\+\-\=\|\{\}\.\!])/g
   const re = new RegExp('([' + chars.map(c => '\\' + c).join('') + '])', 'g');
+  // Replace each matched char with escaped version (\$1 = \\matchedChar)
   return String(text).replace(re, '\\$1');
 }
+
+// Usage example:
+// sanitizeMarkdown("Hello * world!") → "Hello \\* world\\!"
 ```
 
 ### 2. **Error Spike Detection**
