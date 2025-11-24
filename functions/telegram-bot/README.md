@@ -2,6 +2,14 @@
 
 A Telegram bot for managing student showcase content with PDF upload, metadata collection, and automatic publishing to the website.
 
+## 📸 Bot Interface
+
+![Telegram Bot Interface - Commands and Help](../../assets/tg-bot2.png)
+*Bot commands and PDF upload workflow*
+
+![Telegram Bot Interface - Thumbnail Upload](../../assets/tg-bot1.png)
+*Thumbnail processing and upload confirmation*
+
 ## 🚀 Quick Start
 
 ### 1. Deploy the Cloud Function

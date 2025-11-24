@@ -153,6 +153,16 @@ sequenceDiagram
 
 ## 🔌 Telegram + Cloud Run Integration Details
 
+### 📸 Bot Interface Screenshots
+
+The following screenshots show the actual bot interface in use:
+
+![Telegram Bot Commands and Workflow](./assets/tg-bot2.png)
+*Bot commands, role information, and PDF upload workflow demonstration*
+
+![Telegram Bot Thumbnail Processing](./assets/tg-bot1.png)
+*Thumbnail upload process with real-time status updates*
+
 ### 1. **Webhook Configuration**
 
 The Telegram bot operates via webhook instead of polling, making it efficient and serverless-friendly:

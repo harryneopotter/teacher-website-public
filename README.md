@@ -83,6 +83,16 @@ The technical architecture is designed with **simplicity and reliability** at it
 🌐 Students and families can view the work!
 ```
 
+### 📸 The Telegram Bot in Action
+
+The bot provides a simple, conversational interface for managing content:
+
+![Telegram Bot Commands](./assets/tg-bot2.png)
+*Complete command list and PDF upload workflow*
+
+![Telegram Bot Thumbnail Upload](./assets/tg-bot1.png)
+*Thumbnail processing and confirmation messages*
+
 ### Why This Stack?
 
 Each technology choice was made with **sustainability and accessibility** in mind:
