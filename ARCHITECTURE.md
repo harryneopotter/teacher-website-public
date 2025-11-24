@@ -157,10 +157,10 @@ sequenceDiagram
 
 The following screenshots show the actual bot interface in use:
 
-![Telegram Bot Commands and Workflow](../assets/tg-bot2.png)
+![Telegram Bot Commands and Workflow](./assets/tg-bot2.png)
 *Bot commands, role information, and PDF upload workflow demonstration*
 
-![Telegram Bot Thumbnail Processing](../assets/tg-bot1.png)
+![Telegram Bot Thumbnail Processing](./assets/tg-bot1.png)
 *Thumbnail upload process with real-time status updates*
 
 ### 1. **Webhook Configuration**
