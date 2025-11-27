@@ -1,6 +1,6 @@
 # 🏗️ Architecture: Telegram Bot to Google Cloud Run Integration
 
-This document explains the complete architecture of the Teacher Website system, focusing on how the Telegram bot integrates with Google Cloud Run to provide a phone-first content management system.
+This document explains the complete architecture of the Telegram CMS Website system, focusing on how the Telegram bot integrates with Google Cloud Run to provide a phone-first content management system.
 
 ---
 
@@ -33,7 +33,7 @@ This document explains the complete architecture of the Teacher Website system, 
 ```mermaid
 flowchart TB
     subgraph "User Layer"
-        Teacher["👤 Teacher<br/>(Telegram User)"]
+        User["👤 User<br/>(Telegram User)"]
         Visitor["🌐 Website Visitor"]
     end
 
@@ -43,15 +43,15 @@ flowchart TB
 
     subgraph "Google Cloud Platform"
         subgraph "Cloud Functions"
-            BotFunction["☁️ Cloud Function<br/>telegram-showcase-bot<br/>(Node.js 20)"]
+            BotFunction["☁️ Cloud Function<br/>telegram-cms-bot<br/>(Node.js 20)"]
         end
 
         subgraph "Cloud Run"
-            NextJSApp["🚀 Cloud Run Service<br/>showcase-app<br/>(Next.js 14 + TypeScript)"]
+            NextJSApp["🚀 Cloud Run Service<br/>cms-app<br/>(Next.js 14 + TypeScript)"]
         end
 
         subgraph "Storage Layer"
-            Firestore["🗄️ Firestore<br/>(NoSQL Database)<br/>- showcase collection<br/>- authorized_users<br/>- rate_limits<br/>- metrics"]
+            Firestore["🗄️ Firestore<br/>(NoSQL Database)<br/>- content collection<br/>- authorized_users<br/>- rate_limits<br/>- metrics"]
             PDFBucket["📦 Cloud Storage<br/>PDFs Bucket<br/>(Private)"]
             ThumbnailBucket["🖼️ Cloud Storage<br/>Thumbnails Bucket<br/>(Public)"]
             SecretManager["🔐 Secret Manager<br/>- Bot Token<br/>- Gemini API Key"]
@@ -63,14 +63,14 @@ flowchart TB
     end
 
     %% User Interactions
-    Teacher -->|"1. Send PDF/Commands"| TelegramAPI
+    User -->|"1. Send PDF/Commands"| TelegramAPI
     Visitor -->|"Browse Content"| NextJSApp
     Visitor -->|"Submit Contact Form"| NextJSApp
 
     %% Telegram Integration
     TelegramAPI -->|"2. Webhook POST"| BotFunction
     BotFunction -->|"3. Send Messages"| TelegramAPI
-    TelegramAPI -->|"4. Deliver to User"| Teacher
+    TelegramAPI -->|"4. Deliver to User"| User
 
     %% Bot Data Flow
     BotFunction -->|"Read/Write Content"| Firestore
@@ -88,7 +88,7 @@ flowchart TB
     CloudBuild -->|"Build & Deploy"| NextJSApp
     CloudBuild -->|"Deploy Function"| BotFunction
 
-    style Teacher fill:#e1f5ff
+    style User fill:#e1f5ff
     style Visitor fill:#fff4e1
     style BotFunction fill:#c8e6c9
     style NextJSApp fill:#ffccbc
@@ -105,48 +105,48 @@ flowchart TB
 
 ```mermaid
 sequenceDiagram
-    participant Teacher
+    participant User
     participant Telegram
     participant CloudFunction
     participant Storage
     participant Firestore
     participant Website
 
-    Teacher->>Telegram: 1. Send PDF file
+    User->>Telegram: 1. Send PDF file
     Telegram->>CloudFunction: 2. Webhook: file_id, user_id
     CloudFunction->>CloudFunction: 3. Verify authorization
     CloudFunction->>Telegram: 4. Download PDF via Bot API
     CloudFunction->>Storage: 5. Upload PDF to private bucket
     Storage-->>CloudFunction: 6. Return gs:// URL
-    CloudFunction->>Teacher: 7. "PDF uploaded! Provide title:"
+    CloudFunction->>User: 7. "PDF uploaded! Provide title:"
     
-    Teacher->>Telegram: 8. Send title
+    User->>Telegram: 8. Send title
     Telegram->>CloudFunction: 9. Webhook: title text
-    CloudFunction->>Teacher: 10. "Great! Provide author name:"
+    CloudFunction->>User: 10. "Great! Provide author name:"
     
-    Teacher->>Telegram: 11. Send author
+    User->>Telegram: 11. Send author
     Telegram->>CloudFunction: 12. Webhook: author text
-    CloudFunction->>Teacher: 13. "Perfect! Provide description:"
+    CloudFunction->>User: 13. "Perfect! Provide description:"
     
-    Teacher->>Telegram: 14. Send description
+    User->>Telegram: 14. Send description
     Telegram->>CloudFunction: 15. Webhook: description text
-    CloudFunction->>Firestore: 16. Save showcase item
-    CloudFunction->>Teacher: 17. "✅ Published! Send thumbnail or /done"
+    CloudFunction->>Firestore: 16. Save content item
+    CloudFunction->>User: 17. "✅ Published! Send thumbnail or /done"
     
     opt Optional Thumbnail
-        Teacher->>Telegram: 18. Send image
+        User->>Telegram: 18. Send image
         Telegram->>CloudFunction: 19. Webhook: photo data
         CloudFunction->>Storage: 20. Upload to thumbnails bucket
         Storage-->>CloudFunction: 21. Return public URL
-        CloudFunction->>Firestore: 22. Update showcase item
-        CloudFunction->>Teacher: 23. "🎉 All done!"
+        CloudFunction->>Firestore: 22. Update content item
+        CloudFunction->>User: 23. "🎉 All done!"
     end
     
-    Website->>Firestore: 24. Query showcase items
+    Website->>Firestore: 24. Query content items
     Firestore-->>Website: 25. Return published content
     Website->>Storage: 26. Generate signed URL for PDF
     Storage-->>Website: 27. Time-limited access URL
-    Website-->>Teacher: 28. Content visible to visitors
+    Website-->>User: 28. Content visible to visitors
 ```
 
 ---
@@ -170,11 +170,11 @@ The Telegram bot operates via webhook instead of polling, making it efficient an
 #### **Setup Process:**
 ```bash
 # Webhook URL format
-https://REGION-PROJECT_ID.cloudfunctions.net/telegram-showcase-bot
+https://REGION-PROJECT_ID.cloudfunctions.net/telegram-cms-bot
 
 # Setup via Telegram API
 curl -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setWebhook" \
-  -d "url=https://us-central1-project-id.cloudfunctions.net/telegram-showcase-bot"
+  -d "url=https://us-central1-project-id.cloudfunctions.net/telegram-cms-bot"
 ```
 
 #### **Why Webhook?**
@@ -204,7 +204,7 @@ Environment Variables:
 
 #### **Function Entry Point:**
 ```javascript
-exports.telegramShowcaseBot = async (req, res) => {
+exports.telegramCmsBot = async (req, res) => {
   // 1. Initialize bot if not already done
   if (!bot) {
     await initializeSecrets();
@@ -277,7 +277,7 @@ function hasPermission(userId, requiredRole) {
 
 | Bucket | Access | Purpose | URL Type |
 |--------|--------|---------|----------|
-| **PDFs Bucket** | Private | Student work documents | Signed URLs (24h expiry) |
+| **PDFs Bucket** | Private | Content documents | Signed URLs (24h expiry) |
 | **Thumbnails Bucket** | Public | Preview images | Direct HTTPS URLs |
 
 #### **Why This Design?**
@@ -333,9 +333,9 @@ CMD ["node", "server.js"]
 #### **Cloud Build Pipeline:**
 ```yaml
 steps:
-  1. docker build -t gcr.io/$PROJECT_ID/showcase-app:$COMMIT_SHA
-  2. docker push gcr.io/$PROJECT_ID/showcase-app:$COMMIT_SHA
-  3. gcloud run deploy showcase-app
+  1. docker build -t gcr.io/$PROJECT_ID/cms-app:$COMMIT_SHA
+  2. docker push gcr.io/$PROJECT_ID/cms-app:$COMMIT_SHA
+  3. gcloud run deploy cms-app
 ```
 
 #### **Environment Variables:**
@@ -360,15 +360,15 @@ await bot.sendMessage(ADMIN_USER_ID,
 ## 📁 Repository Structure
 
 ```
-teacher-website-public/
+telegram-cms-website/
 ├── app/                      # Next.js 14 App Router
 │   ├── page.tsx             # Homepage
-│   ├── showcase/            # Student work gallery
+│   ├── content/             # Content gallery
 │   └── api/                 # API routes (contact form)
 │
 ├── components/               # React components
 │   ├── ui/                  # shadcn/ui components
-│   └── showcase-card.tsx    # Display student work
+│   └── content-card.tsx     # Display content
 │
 ├── lib/                     # Utilities
 │   └── utils.ts            # Helper functions
@@ -426,7 +426,7 @@ function sanitizeMarkdown(text) {
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /showcase/{docId} {
+    match /content/{docId} {
       allow read: if true;  // Public read
       allow write: if false; // Only via Cloud Function
     }
@@ -478,10 +478,10 @@ cd functions/telegram-bot
 ### **Cloud Logging:**
 ```bash
 # View Cloud Function logs
-gcloud functions logs read telegram-showcase-bot --region=us-central1
+gcloud functions logs read telegram-cms-bot --region=us-central1
 
 # View Cloud Run logs
-gcloud run services logs read showcase-app --region=us-central1
+gcloud run services logs read cms-app --region=us-central1
 ```
 
 ---
@@ -509,7 +509,7 @@ gcloud run services logs read showcase-app --region=us-central1
 - ✅ **Free tier**: Fits within Always Free limits
 
 ### 4. **Why Private PDFs?**
-- ✅ **Privacy**: Protects student work
+- ✅ **Privacy**: Protects user content
 - ✅ **Control**: Time-limited access
 - ✅ **Security**: No direct public URLs
 - ✅ **Tracking**: Can monitor access patterns

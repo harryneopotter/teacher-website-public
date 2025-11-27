@@ -1,10 +1,10 @@
-# ✨ Every Child Has a Story – Creative Writing Program Website
+# ✨ Telegram CMS Website
 
-> *A warm, accessible, and inclusive platform designed to celebrate young voices and remove barriers to website management.*
+> *A warm, accessible, and inclusive platform designed to remove barriers to website management.*
 
-![Website Screenshot](./teacher-website.jpg)
+![Website Screenshot](./telegram-cms-website.jpg)
 
-Welcome to the **Teacher's Creative Writing Program** website – a project born from a simple belief: **technology should empower, not complicate**. This site was built with care for a creative educator who needed a way to share students' incredible work with the world, without the complexity of traditional content management systems.
+Welcome to the **Telegram CMS Website** – a project born from a simple belief: **technology should empower, not complicate**. This site was built to provide a way to share content with the world, without the complexity of traditional content management systems.
 
 ## 💜 Why This Exists
 
@@ -21,7 +21,7 @@ When traditional CMS platforms create barriers – requiring computers, complex 
 
 ## 🌟 Features Built with Care
 
-* 📱 **Phone-First Management** — Upload student work (PDFs, descriptions, images) via Telegram – no computer needed
+* 📱 **Phone-First Management** — Upload content (PDFs, descriptions, images) via Telegram – no computer needed
 * 🎯 **Zero Friction** — No dashboards, no logins, no complexity – just simple, direct communication
 * 📬 **Instant Notifications** — Contact form submissions delivered immediately to Telegram with all details
 * ⚡ **Automatic Processing** — Files are stored securely and published to the live site in seconds
@@ -50,7 +50,7 @@ When traditional CMS platforms create barriers – requiring computers, complex 
 
 This project represents a fundamental belief: **technology should serve people, not the other way around**.
 
-For an educator with limited mobility, traditional website management would create unnecessary barriers. Instead of forcing someone to adapt to complex tools, we built tools that adapt to them. The result is a system that respects autonomy, reduces friction, and maintains dignity.
+For a user with limited mobility, traditional website management would create unnecessary barriers. Instead of forcing someone to adapt to complex tools, we built tools that adapt to them. The result is a system that respects autonomy, reduces friction, and maintains dignity.
 
 ### What This Means in Practice:
 
@@ -72,7 +72,7 @@ The technical architecture is designed with **simplicity and reliability** at it
 
 ### The Flow:
 ```
-📱 Teacher sends message via Telegram
+📱 User sends message via Telegram
     ↓
 ☁️ Cloud Function receives and processes it
     ↓
@@ -80,7 +80,7 @@ The technical architecture is designed with **simplicity and reliability** at it
     ↓
 🚀 Website automatically updates on Cloud Run
     ↓
-🌐 Students and families can view the work!
+🌐 Users can view the work!
 ```
 
 ### 📸 The Telegram Bot in Action
@@ -177,7 +177,7 @@ The system needs a few environment variables to work properly. Don't worry – t
 - 🛡️ **Gitleaks integration** — Comprehensive secret detection
 - 📋 **Removal guides** — Step-by-step instructions for cleaning sensitive data
 - 🔑 **Secret Manager** — All sensitive credentials stored securely in GCP
-- 🚫 **Private PDFs** — Student work accessible only via time-limited signed URLs
+- 🚫 **Private PDFs** — Content accessible only via time-limited signed URLs
 - ✅ **PII Removed** — All personal information scrubbed from repository history
 
 ### Set Up Security Hooks:
@@ -212,10 +212,10 @@ While this isn't a generic CMS solution, it demonstrates powerful patterns you m
 
 ### Great For:
 - 📱 **Phone-first content management** — When a computer isn't accessible or practical
-- 🎓 **Educational platforms** — Showcasing student work, portfolios, and achievements
+- 🎓 **Educational platforms** — Showcasing work, portfolios, and achievements
 - ♿ **Accessibility-focused projects** — When traditional tools create barriers
 - 🤝 **Community-driven sites** — Simple content updates without technical expertise
-- 📝 **Portfolio websites** — For artists, educators, or creative professionals
+- 📝 **Portfolio websites** — For artists, content creators, or creative professionals
 - 🌍 **Low-resource environments** — Minimal maintenance, maximum impact
 
 ### Key Patterns You Can Adapt:
@@ -261,7 +261,7 @@ We welcome contributions that align with the project's **accessibility-first** p
 
 This project demonstrates that **thoughtful technology can remove barriers** and empower people. It might inspire solutions for:
 
-- Educators with accessibility needs
+- Content creators with accessibility needs
 - Small creative businesses without technical resources
 - Community organizations needing simple content management
 - Anyone who believes technology should adapt to people, not vice versa
@@ -276,19 +276,19 @@ This project started with a simple question: **How can we make technology work f
 
 The answer wasn't found in adding more features, building complex dashboards, or creating elaborate systems. It was found in **removing barriers**, **respecting limitations**, and **designing with empathy**.
 
-Every child has a story. Every educator deserves tools that empower rather than frustrate. Every person deserves technology that respects their dignity and autonomy.
+Every person deserves technology that respects their dignity and autonomy.
 
-This website celebrates young voices, honors creative teaching, and demonstrates that **thoughtful design can quietly change lives**.
+This website demonstrates that **thoughtful design can quietly change lives**.
 
 ---
 
 ## 🙏 Acknowledgments
 
-Built with care for a creative educator who inspires young minds to discover the magic of words and storytelling.
+Built with care for content creators who inspire.
 
 Special thanks to:
-- The young writers whose creativity and imagination make this all worthwhile
-- The families who trust their children's work to be shared
+- The content creators whose creativity and imagination make this all worthwhile
+- The users who trust their work to be shared
 - Everyone who believes in accessible, inclusive technology
 - The open-source community for providing the tools that made this possible
 
