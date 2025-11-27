@@ -1,16 +1,16 @@
-# 📖 Project Story – Accessible Website Management via Telegram + GCP
+# 📖 Project Story – A Telegram-Powered CMS
 
-This project was created for a creative educator who needed a simple, phone-first way to manage content without relying on a CMS, admin dashboard, or traditional laptop workflows.
+This project was created for a user who needed a simple, phone-first way to manage a content platform without relying on a CMS, admin dashboard, or traditional laptop workflows.
 
-Due to limited mobility, updating PDFs, images, and student work through a conventional CMS would have been difficult. Instead, this site is designed to be maintained entirely via a Telegram bot — allowing the educator to upload showcase content, receive contact leads, and update the site effortlessly using just a phone.
+For users who are more comfortable working from their phone, updating PDFs, images, and other content through a conventional CMS can be difficult. This site is designed to be maintained entirely via a Telegram bot — allowing the user to upload content, receive contact leads, and update the site effortlessly using just a phone.
 
 ---
 
 ## ✅ Motivation
 
-The user never asked for these tools directly — they simply needed a functioning website. Once it was built, it became clear that the content (student work submissions) would need to be updated regularly.
+The initial requirement was for a simple, functioning website. Once it was built, it became clear that the content would need to be updated regularly.
 
-Rather than creating a heavy admin layer or CMS, it was more efficient — and more respectful of the user's workflow — to build a Telegram-based interface that integrates directly with the deployed site.
+Rather than creating a heavy admin layer or a complex CMS, it was more efficient — and more respectful of the user's workflow — to build a Telegram-based interface that integrates directly with the deployed site. This provides a lightweight, accessible alternative for content management.
 
 ---
 
